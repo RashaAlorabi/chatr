@@ -3,6 +3,10 @@ from .models import Message, Channel
 from django.contrib.auth.models import User
 from rest_framework_jwt.settings import api_settings
 
+class UserSerializer(serializers.ModelSerializer):
+   class Meta:
+       model = User
+       fields = ['id', 'username', 'email', ]
 
 class UserLoginSerializer(serializers.Serializer):
     username = serializers.CharField()
@@ -34,27 +38,25 @@ class UserLoginSerializer(serializers.Serializer):
 
 class MessageListSerializer(serializers.ModelSerializer):
     username = serializers.SerializerMethodField()
-
     class Meta:
         model = Message
         exclude = ['user']
-
     def get_username(self, obj):
         return obj.user.username
 
-
 class ChannelSerializer(serializers.ModelSerializer):
+    member_count = serializers.SerializerMethodField()
     class Meta:
         model = Channel
-        fields = ['name', 'id', 'image_url']
+        fields = ['name', 'id', 'image_url','members','channel_date', 'member_count']
+    def get_member_count(self, obj):
+        return obj.members.count()
 
 
 class MessageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['message']
-        # fields = '__all__'
-
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)

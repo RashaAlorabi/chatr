@@ -5,7 +5,9 @@ from .views import (
     UserLoginAPIView,
     UserCreateAPIView,
     ChannelCreateAPIView,
-    ChannelListAPIView
+    ChannelListAPIView,
+    JoindChannelView,
+    UnJoindChannelView
 )
 urlpatterns = [
     path('', ChannelListAPIView.as_view(), name='channel-list'),
@@ -13,4 +15,5 @@ urlpatterns = [
     path('<int:channel_id>/', MessageListView.as_view(), name='message-list'),
     path('<int:channel_id>/send/',
          MessageCreateView.as_view(), name='message-create'),
-]
+    path('<int:channel_id>/add',JoindChannelView.as_view(), name='member-append'),
+    path('<int:channel_id>/delete',UnJoindChannelView.as_view(), name='member-remove')]

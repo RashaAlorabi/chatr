@@ -49,7 +49,29 @@ class ChannelListAPIView(ListAPIView):
     queryset = Channel.objects.all()
     permission_classes = [IsAuthenticated, ]
 
+# class UserListAPIView(ListAPIView):
+#     serializer_class = UserSerializer
+#     queryset = Channel.objects.all()
+#     permission_classes = [IsAuthenticated, ]
 
+class JoindChannelView(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request, channel_id):
+        channel=Channel.objects.get(id=channel_id)
+        channel.members.add(User.objects.get(id=request.user.id))
+        channel.save()
+        return Response(ChannelSerializer(channel).data, status=HTTP_200_OK)
+
+class UnJoindChannelView(APIView):
+    permission_classes = [IsAuthenticated, ]
+
+    def put(self, request, channel_id):
+        channel=Channel.objects.get(id=channel_id)
+        channel.members.remove(User.objects.get(id=request.user.id))
+        channel.save()
+      
+        return Response(ChannelSerializer(channel).data, status=HTTP_200_OK)
 class MessageCreateView(APIView):
     serializer_class = MessageCreateSerializer
     permission_classes = [IsAuthenticated, ]
