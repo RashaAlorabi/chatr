@@ -44,6 +44,7 @@ class MessageListSerializer(serializers.ModelSerializer):
     def get_username(self, obj):
         return obj.user.username
 
+
 class ChannelSerializer(serializers.ModelSerializer):
     member_count = serializers.SerializerMethodField()
     class Meta:
@@ -52,11 +53,11 @@ class ChannelSerializer(serializers.ModelSerializer):
     def get_member_count(self, obj):
         return obj.members.count()
 
-
 class MessageCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Message
         fields = ['message']
+
 
 class UserCreateSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
