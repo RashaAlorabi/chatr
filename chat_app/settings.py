@@ -23,12 +23,12 @@ SECRET_KEY = config(
     default='o8*sh__j&qi&%iay0j0@ybo6@%_c(1quk8(9&r-#*o!)ku_ly^'
 )
 # DEBUG = config('DEBUG', default=False, cast=bool)
-DEBUG = True
+DEBUG = False
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.0/howto/deployment/checklist/
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['127.0.0.1','138.68.80.119']
 
 
 # Application definition
@@ -86,14 +86,24 @@ REST_FRAMEWORK = {
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
-
-DATABASES = {
+if DEBUG:
+    DATABASES = {
     'default': dj_database_url.config(
         default=config(
             'DATABASE_URL',
             default="sqlite:///" + os.path.join(BASE_DIR, 'db.sqlite3')
         )
     )
+}else:
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': '7ad934214d1e566d240914a908fd0c9f',
+        'HOST': 'localhost',
+        'PORT': '',
+    }
 }
 
 
